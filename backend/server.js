@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const path = require('path')
-// const hamsters = require('./routes/hamsters.js')
+const hamsters = require(path.join(__dirname, 'routes/hamsters.js')) // <----- Target
 
 const PORT = process.env.PORT || 1340
 
@@ -24,14 +24,19 @@ app.use( express.static(buildFolder) )
 
 // ============= ROUTES ============= //
 
-// app.use('/hamsters', hamsters)
+app.use('/hamsters', hamsters) // "use" gör det till en klump med routes
+
 app.get('/', (req, res) => {
     res.send('Hello from server')
 })
 
+/* console.log(hamsters); */
+/* app.use('/hamsters', hamsters) */
+
 // Ska vara sist för att fånga upp alla övriga requests
 // För att frontend-rountingen ska fungera
 app.get('*', (req, res) => {
+	console.log('matchade övrig route:', req.url);
     res.sendFile(path.join(__dirname, '../build/index.html'))
 })
 

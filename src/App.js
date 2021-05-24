@@ -25,6 +25,7 @@ import { BrowserRouter as Router, Link, Switch, Route } from 'react-router-dom';
 		- Jag pushade till Heroku, innan jag lagt till en private key.
 		- Jag hittar ingen private key.
 		- Hur skaffar jag en private key?
+		- Jag testade med den gamla
 */
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
 				<nav>
 					<Link to="/"> starting page </Link>
 					<Link to="/annan"> annan page </Link>
+					<Link to="/hamsters"> annan page </Link>
 				</nav>
 			</header>
 			<main>
@@ -42,6 +44,7 @@ function App() {
 				<Switch>
 					<Route path="/annan"> I AM ANNAN </Route>
 					<Route path="/"> I AM START </Route>
+					<Route path="/hamsters"> I AM START </Route>
 				</Switch>
 
 			</main>
