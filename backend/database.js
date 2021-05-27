@@ -1,6 +1,6 @@
 const admin = require("firebase-admin");
 
-let serviceAccount; 
+let serviceAccount;
 if ( process.env.PRIVATE_KEY ) {
 	// På Heroku
 	serviceAccount = JSON.parse(process.env.PRIVATE_KEY)
@@ -8,7 +8,6 @@ if ( process.env.PRIVATE_KEY ) {
 	// Lokalt
 	serviceAccount = require("./private-key.json");
 }
-
 
 admin.initializeApp({
 	credential: admin.credential.cert(serviceAccount)

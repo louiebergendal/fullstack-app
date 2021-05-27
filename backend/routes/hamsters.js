@@ -7,10 +7,6 @@ const router = express.Router()
 const validation = require('../utilities/validation.js')
 
 
-// proxy
-
-
-
 // INDEX:
 // GET /hamsters
 // GET /hamsters/random
@@ -25,13 +21,14 @@ const validation = require('../utilities/validation.js')
 
 // DELETE /hamsters/:id
 
-
 // ** REST API **
 
 // GET /hamsters
 router.get('/', async (req, res) => {
 	try {
-		
+
+		console.log('LEGIT QUERRY - GET /hamsters');
+
 		const hamstersRef = db.collection('hamsters')
 		const snapshot = await hamstersRef.get()
 
@@ -45,10 +42,10 @@ router.get('/', async (req, res) => {
 		let hamsters = []
 	
 		// Fyller hamsters med hamstrarna i databasen
-		snapshot.forEach(doc => {
-			const hamster = doc.data()
-			hamster.id = doc.id
-			hamsters.push( hamster )
+		snapshot.forEach(hamster => {
+			const hamsterData = hamster.data()
+			hamsterData.id = hamster.id
+			hamsters.push( hamsterData ) // <----- Firestore-data?
 		})
 	
 		// Allt gick bra. Hamstrarna skickas.
@@ -64,6 +61,8 @@ router.get('/', async (req, res) => {
 router.get('/random', async (req, res) => {
 	try {
 
+		console.log('LEGIT QUERRY - GET /hamsters/random');
+
 		const hamstersRef = db.collection('hamsters')
 		const snapshot = await hamstersRef.get()
 
@@ -77,10 +76,10 @@ router.get('/random', async (req, res) => {
 		// Fyller på en array att slumpa en hamster ifrån
 		let hamsters = []
 
-		snapshot.forEach(doc => { // Loop
-			const hamster = doc.data()
-			hamster.id = doc.id
-			hamsters.push( hamster )
+		snapshot.forEach(hamster => {
+			const hamsterData = hamster.data()
+			hamsterData.id = hamster.id
+			hamsters.push( hamsterData )
 		})
 	
 		// Allt gick bra. Slumpar fram en hamster från hamsters och skickar.
@@ -96,6 +95,8 @@ router.get('/random', async (req, res) => {
 // GET /hamsters/:id
 router.get('/:id', async (req, res) => {
 	try {
+
+		console.log('LEGIT QUERRY - GET /hamsters/:id');
 
 		const id = req.params.id
 		const docRef = await db.collection('hamsters').doc(id).get()
@@ -114,9 +115,12 @@ router.get('/:id', async (req, res) => {
 })
 
 
-// POST /hamsters
+// POST /hamster
 router.post('/', async (req, res) => {
 	try {
+
+		console.log('LEGIT QUERRY - POST /hamsters');
+
 		const body = req.body
 
 		// Validerar bodyn
@@ -136,7 +140,10 @@ router.post('/', async (req, res) => {
 
 // PUT /hamsters/:id
 router.put('/:id', async (req, res) => {
-	try {	
+	try {
+
+		console.log('LEGIT QUERRY - PUT /hamster/:id');
+
 		const body = req.body
 
 		// Validerar body
@@ -176,6 +183,8 @@ router.put('/:id', async (req, res) => {
 router.put('/:id/win', async (req, res) => {
 	try {
 
+		console.log('LEGIT QUERRY - PUT /hamsters/:id/win');
+
 		const id = req.params.id
 		const docRef = db.collection('hamsters').doc(id)
 		const doc = await docRef.get();
@@ -204,6 +213,8 @@ router.put('/:id/win', async (req, res) => {
 router.put('/:id/lose', async (req, res) => {
 	try {
 
+		console.log('LEGIT QUERRY - PUT /hamsters/:id/lose');
+
 		const id = req.params.id
 		const docRef = db.collection('hamsters').doc(id)
 		const doc = await docRef.get();
@@ -231,6 +242,8 @@ router.put('/:id/lose', async (req, res) => {
 // DELETE /hamsters/:id
 router.delete('/:id', async (req, res) => {
 	try {
+
+		console.log('LEGIT QUERRY - DELETE /hamsters/:id');
 
 		const id = req.params.id
 		const docRef = await db.collection('hamsters').doc(id).get()

@@ -35,7 +35,7 @@ function propertyValues(body, res){
 
 	Object.keys(body).forEach(bodyKey => { // "Object.Keys()" Gör så att man kan hantera ett objekt som en array (loopa etc)
 
-		// Kollar så att bodynyckelns värde har rätt datatyp
+		// Kollar så att body-nyckelns värde har rätt datatyp
 		if (bodyKey === 'age' || bodyKey === 'wins' || bodyKey === 'defeats' || bodyKey === 'games') {
 			if ( typeof body[bodyKey] != 'number') {
 				numbersValid = false
@@ -93,6 +93,8 @@ function propertyKeys(body, hamster, res){
 function bodyKeys(body, res){
 
 	console.log('Analyzing hamster keys ...');
+
+	console.log('body: ', body);
 
 	// Kollar så att antalet properties stämmer
 	if( Object.keys(body).length > 8 ) {
@@ -166,7 +168,10 @@ function bodyValues(body, res){
 		return false
 	}
 
-	if (typeof body.age !== 'number' || body.age < -1) {
+	console.log('body.age: ', body.age);
+	console.log('typeof body.age: ', typeof body.age);
+
+	if (typeof body.age !== 'number' || body.age < 0) {
 		console.log('"age" must be a positive number. Query rejected.');
 		res.status(400).send('"age" must be a positive number. Query rejected.')
 		return false

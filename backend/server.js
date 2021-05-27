@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const path = require('path')
-const hamsters = require(path.join(__dirname, 'routes/hamsters.js')) // <----- Target
+const hamsters = require(path.join(__dirname, 'routes/hamsters.js'))
 
 const PORT = process.env.PORT || 1340
 
@@ -30,13 +30,10 @@ app.get('/', (req, res) => {
     res.send('Hello from server')
 })
 
-/* console.log(hamsters); */
-/* app.use('/hamsters', hamsters) */
-
 // Ska vara sist för att fånga upp alla övriga requests
 // För att frontend-rountingen ska fungera
 app.get('*', (req, res) => {
-	console.log('matchade övrig route:', req.url);
+	console.log('Matchade övrig route:', req.url);
     res.sendFile(path.join(__dirname, '../build/index.html'))
 })
 
@@ -51,8 +48,9 @@ function errorHandler (err, req, res, next) {
 	if (res.headersSent) {
 	  return next(err)
 	}
+
 	res.status(500)
-	res.render('error', { error: err })
+	res.send({message: 'error', error: err})
 }
 
 // Starta servern

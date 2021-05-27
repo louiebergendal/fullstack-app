@@ -1,17 +1,36 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Link, Switch, Route } from 'react-router-dom';
+import Start from './components/start/Start'
+import Kamp from './components/kamp/Kamp'
+import Galleri from './components/galleri/Galleri'
 
 /*
-	TO DO:
-		- Kolla alla filmerna (1 - 4 på skrivbordet)
-			x film 1 - basic app med frontend-routing
-			- film 2 - kopiera backend (23:26)
-			- film 3
-			- film 4
+	FUNDERINGAR:
+	
+	Det känns som att jag inte använder det tänkta systemet.
+	Jag vill anväda db.collections från frontend.
 
-	PÅMÅNDAG:
-		- Fixa globalspace
+	skillnaden
+	Hu använder man db.collection-metoden?
+		när är den tänkt att användas?
+	
+	
+	Varför förstår fetch url:en /hamsters?
+
+	massPost:
+	async function postHamster(hamster) {
+		db.collection('hamsters').add(hamster)
+	}
+
+	fetch:
+	async function getHamsters() {
+		const response = await fetch('/hamsters', { method: 'GET' })
+		return await response.json() /
+	}
+
+
+
 
 
 	SETUP:
@@ -20,12 +39,6 @@ import { BrowserRouter as Router, Link, Switch, Route } from 'react-router-dom';
 			"node backend/server.js" - backend
 			"npm run start" - frontend
 
-
-	BAJS:
-		- Jag pushade till Heroku, innan jag lagt till en private key.
-		- Jag hittar ingen private key.
-		- Hur skaffar jag en private key?
-		- Jag testade med den gamla
 */
 
 function App() {
@@ -35,16 +48,16 @@ function App() {
 			<header className="App-header">
 				<nav>
 					<Link to="/"> starting page </Link>
-					<Link to="/annan"> annan page </Link>
-					<Link to="/hamsters"> annan page </Link>
+					<Link to="/kamp"> kamp page </Link>
+					<Link to="/galleri"> Galleri page </Link>
 				</nav>
 			</header>
 			<main>
 
 				<Switch>
-					<Route path="/annan"> I AM ANNAN </Route>
-					<Route path="/"> I AM START </Route>
-					<Route path="/hamsters"> I AM START </Route>
+					<Route path="/kamp"> {<Kamp />} </Route>
+					<Route path="/galleri"> {<Galleri />} </Route>
+					<Route path="/"> {<Start />} </Route>
 				</Switch>
 
 			</main>
