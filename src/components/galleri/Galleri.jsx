@@ -45,21 +45,28 @@ const Galleri = () => {
 	}
 
 	return (
-		<section className='gallery'>
-			{hamsters /* Om hamsterarna finns så mapas de ut */
-				? hamsters.map(hamster => (
+		<div>
+			<section className='gallery'>
+				{hamsters /* Om hamsterarna finns så mapas de ut */
+					? hamsters.map(hamster => (
 
-					<div key={hamster.id}>
-						<p>{hamster.name}</p>
-						<img src={`img/${hamster.imgName}`} alt="hamster" /> {/* om den blir "alt" så vill jag välja bild */}
-						<button onClick={() => removeHamster(hamster.id)}>Remove</button>
-					</div>
+						<div key={hamster.id} className='gallery-item'>
+							<p>{hamster.name}</p>
 
-				))
-				: 'Hämtar hamstrar från API...'
-			}
+							<div className='gallery-item-img' style={{backgroundImage: `url(img/${hamster.imgName})`}} ></div>
+							
+							{/* <img src={`img/${hamster.imgName}`} alt="hamster" className='gallery-item-img'/> */} {/* om den blir "alt" så vill jag välja bild */}
+							<button onClick={() => removeHamster(hamster.id)}>Remove</button>
+						</div>
+
+					))
+					: 'Hämtar hamstrar från API...'
+				}
+			</section>
+
 			<HamsterForm />
-		</section>
+
+		</div>
 	)
 }
 
