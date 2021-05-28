@@ -1,21 +1,20 @@
 import { useEffect, useState } from 'react'
 import { useMountedRef } from '../../hooks/useMountedRef'
 import HamsterForm from '../hamster-form/HamsterForm'
+import './Galleri.css'
 
 /* 
-TODO:
+	TODO:
+		Galleri
+		Här ska appen visa alla hamstrars namn och bild, i ett CSS grid.
 
-ROUTE:		URL:		FÖRKLARING:
-Startsida	/			Förklarar hur man använder appen.
-Kamp		/battle		Visa två slumpade hamstrar. 
-						Låt användaren välja den sötaste. 
-						Visa resultatet och initiera nästa match.
-Galleri		/gallery	Visa alla hamstrar som finns i databasen. 
-						Från galleriet ska man även kunna lägga till nya hamstrar och ta bort gamla.
+		Man ska kunna ta bort en hamster från galleriet.
 
+		Man ska kunna lägga till en ny hamster via ett formulär. 
+		Formuläret ska använda validering.
 
-Om du inte får bilderna att fungera: skapa mappen img i frontend-mappen public och lägg dem där. /public/img
-Så länge bilderna är med i repot kommer de att pushas till Heroku, och tas med när appen byggs.
+		Tänk på att inte visa för mycket information direkt. 
+		Låt användaren klicka/hovra över en bild för att visa mer information.
 */
 
 const Galleri = () => {
@@ -46,18 +45,21 @@ const Galleri = () => {
 	}
 
 	return (
-		<div>
+		<section className='gallery'>
 			{hamsters /* Om hamsterarna finns så mapas de ut */
 				? hamsters.map(hamster => (
+
 					<div key={hamster.id}>
-						{hamster.name}
+						<p>{hamster.name}</p>
+						<img src={`img/${hamster.imgName}`} alt="hamster" /> {/* om den blir "alt" så vill jag välja bild */}
 						<button onClick={() => removeHamster(hamster.id)}>Remove</button>
 					</div>
+
 				))
 				: 'Hämtar hamstrar från API...'
 			}
 			<HamsterForm />
-		</div>
+		</section>
 	)
 }
 

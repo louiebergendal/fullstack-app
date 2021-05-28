@@ -1,8 +1,3 @@
-
-/* 
-
-*/
-
 import { useState } from 'react'
 
 const HamsterForm = () => {
@@ -11,13 +6,29 @@ const HamsterForm = () => {
 	const [inputFavFood, setInputFavFood] = useState('default')
 	const [inputLoves, setInputLoves] = useState('default')
 	const [inputImgName, setInputImgName] = useState('default')
-	const [inputWins, setInputWins] = useState(0)
-	const [inputDefeats, setInputDefeats] = useState(0)
+	const [wins] = useState(0)
+	const [defeats] = useState(0)
 	const [games, setGames] = useState(0)
 
 	async function postHamster() {
 
-		setGames(inputWins + inputDefeats)
+		console.log('POST HAMSTER');
+
+		// ======= VALIDERING ======= //
+		if (inputName.length === 0) {
+			console.log('Each contestor needs to have a name!');
+			return
+		}
+		if (inputFavFood.length === 0) {
+			console.log('Each contestor needs to have a favourite food!');
+			return
+		}
+		if (inputLoves.length === 0) {
+			console.log('Each contestor must love something!');
+			return
+		}
+
+		setGames(wins + defeats)
 
 		const formData = {
 			'name': inputName,
@@ -25,8 +36,8 @@ const HamsterForm = () => {
 			'favFood': inputFavFood,
 			'loves': inputLoves,
 			'imgName': inputImgName,
-			'wins': inputWins,
-			'defeats': inputDefeats,
+			'wins': wins,
+			'defeats': defeats,
 			'games': games
 		}
 
@@ -41,55 +52,56 @@ const HamsterForm = () => {
 	}
 
 	return (
-	<section>
-		<p>
-			<label> 
-				Name:
-				<input onChange={event => {
-						console.log('Controlled change', event.target.value);
-						setInputName(event.target.value.toUpperCase()) // Här kan jag kontrollera fältet
-					}}
-					value={inputName}
-				/>
-			</label>
-		</p>
-		<p>
-			<label> 
-				Age:
-				<input onChange={event => {
-						console.log('Controlled change', event.target.value);
-						setInputAge(event.target.value) // Här kan jag kontrollera fältet
-					}}
-					value={inputAge}
-				/>
-			</label>
-		</p>
-		<p>
-			<label> 
-				Favourite food:
-				<input onChange={event => {
-						console.log('Controlled change', event.target.value);
-						setInputFavFood(event.target.value.toUpperCase()) // Här kan jag kontrollera fältet
-					}}
-					value={inputFavFood}
-				/>
-			</label>
-		</p>
-		<p>
-			<label> 
-				Loves:
-				<input onChange={event => {
-						console.log('Controlled change', event.target.value);
-						setInputLoves(event.target.value.toUpperCase()) // Här kan jag kontrollera fältet
-					}}
-					value={inputLoves}
-				/>
-			</label>
-		</p>
-		
-		<button onClick={postHamster}> post hamster </button>
+		<section>
+			<div>
+				<label> 
+					Name:
+					<input onChange={event => {
+							setInputName(event.target.value)// <--- Här styr jag inputfältet
+							// EXEMPEL: setInputName(event.target.value.toUpperCase())
+						}}
+						value={inputName}
+					/>
+				</label>
+			</div>
+			<div>
+				<label> 
+					Age:
+					<input onChange={event => {
+							if (event.target.value >= 0) {
+								setInputAge(event.target.value)	
+							}
+						}}
+						value={inputAge}
+					/>
+				</label>
+			</div>
+			<div>
+				<label> 
+					Favourite food:
+					<input onChange={event => {
+							console.log('Controlled change', event.target.value)
+							setInputFavFood(event.target.value)
+						}}
+						value={inputFavFood}
+					/>
+				</label>
+			</div>
+			<div>
+				<label> 
+					Loves:
+					<input onChange={event => {
+							console.log('Controlled change', event.target.value)
+							setInputLoves(event.target.value)
+						}}
+						value={inputLoves}
+					/>
+				</label>
+			</div>
+			
+			<button onClick={postHamster}> post hamster </button>
 
-	</section>
-
-)}
+		</section>
+	)
+}
 export default HamsterForm

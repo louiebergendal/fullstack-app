@@ -70,11 +70,11 @@ const Kamp = () => {
 
 	// ======= RETURN ETC ======= //
 	return (
-		<div>
+		<section>
 			<button onClick={()=> declareWinner(hamsterHero.id, hamsterVillain.id)}>{hamsterHero ? hamsterHero.name : defaultString}</button>
 			<br />VS<br />
 			<button onClick={()=> declareWinner(hamsterVillain.id, hamsterHero.id)}>{hamsterVillain ? hamsterVillain.name : defaultString}</button>
-		</div>
+		</section>
 	)
 }
 export default Kamp
