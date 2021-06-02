@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useMountedRef } from '../../hooks/useMountedRef'
+/* import { Link } from 'react-router-dom'; */
+import HamsterCard from '../hamster-card/HamsterCard'
 import HamsterForm from '../hamster-form/HamsterForm'
-import './Galleri.css'
+import InfoBox from '../info-box/InfoBox'
+import './Gallery.css'
 
 /* 
 	TODO:
@@ -15,10 +18,23 @@ import './Galleri.css'
 
 		Tänk på att inte visa för mycket information direkt. 
 		Låt användaren klicka/hovra över en bild för att visa mer information.
+
+
+
+	Route till hamster/id
+		Komponent som laddas vid den routen
+			logga hela hamster-objektet onMount
+
+
+			ELLER:
+				Gör som i galleri, men hämta bara en hamster
+				Vilken hamster? Kan jag skicka med id?
+
+
 */
 
-const Galleri = () => {
-
+const Gallery = () => {
+	const [selectedHamster, setSelectedHamster] = useState(null)
 	const [hamsters, setHamsters] = useState(null)
 	const isMounted = useMountedRef()
 
@@ -34,42 +50,57 @@ const Galleri = () => {
 		get()
 	}, [isMounted])
 
+	// Hämta hamstrar från databas
 	async function getHamsters() {
 		const response = await fetch('/hamsters', { method: 'GET' })
 		return await response.json()
 	}
 
+	// Ta bort hamster
 	async function removeHamster(hamsterID) {
 		await fetch(`/hamsters/${hamsterID}`, { method: 'DELETE' })
 		setHamsters(await getHamsters())
 	}
 
+	// Ska öppna popup? eller egen route?
+	function checkInfo(hamster) {
+		setSelectedHamster(hamster)
+	}
+
+
+
 	return (
 		<div>
-			<section className='gallery'>
-				{hamsters /* Om hamsterarna finns så mapas de ut */
+			{selectedHamster ? 
+				/* Om en hamster är klickad så visas info-rutan */
+				<InfoBox hamster={selectedHamster}/>
+				: 
+				/* Annars visas galleriet */
+				<section className='gallery'>
+					{hamsters /* Om hamsterarna finns så mapas de ut */
 					? hamsters.map(hamster => (
-
-						<div key={hamster.id} className='gallery-item'>
-							<p>{hamster.name}</p>
-
-							<div className='gallery-item-img' style={{backgroundImage: `url(img/${hamster.imgName})`}} ></div>
+						<div key={hamster.id} className='gallery-item' onClick={() => checkInfo(hamster)}>
 							
-							{/* <img src={`img/${hamster.imgName}`} alt="hamster" className='gallery-item-img'/> */} {/* om den blir "alt" så vill jag välja bild */}
-							<button onClick={() => removeHamster(hamster.id)}>Remove</button>
-						</div>
+							<HamsterCard hamster={hamster} />
 
+							<button onClick={() => removeHamster(hamster.id)}>Remove</button>
+
+							{/*  */}
+							{/* <Link to={`/gallery/${hamster.id}`}>gallery</Link> */}
+
+						</div>
 					))
 					: 'Hämtar hamstrar från API...'
-				}
-			</section>
+					}
+				
+					<HamsterForm />
 
-			<HamsterForm />
-
+				</section>	
+			}
 		</div>
 	)
 }
 
-export default Galleri
+export default Gallery
 
 

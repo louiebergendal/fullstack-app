@@ -1,8 +1,10 @@
 
 import { useEffect, useState } from 'react'
 import { useMountedRef } from '../../hooks/useMountedRef'
+import HamsterCard from '../hamster-card/HamsterCard'
+import './Kamp.css'
 
-/* 
+/*
 TODO:
 	Visa alla hamstrar som finns i databasen. 
 	Från galleriet ska man även kunna lägga till nya hamstrar och ta bort gamla.
@@ -32,6 +34,8 @@ const Kamp = () => {
 	useEffect(() => {
 		async function get() {
 
+			console.log('useEffect');
+
 			// Hämtar kombatanter från backend
 			const heroHamster = await getRandomHamster()
 			const villainHamster = await recursivelyGetVillainousHamster(heroHamster)
@@ -45,14 +49,18 @@ const Kamp = () => {
 		get() // Funktionen kallar på sig själv
 	},	[isMounted, newMatchInitiator])
 
+/* 	console.log('hamsterHero2: ', hamsterHero);
+	console.log('villainHamster2: ', villainHamster); */
+
 	// ======= FUNKTIONS-DEKLARATIONER ======= //
 	async function declareWinner(winnerID, looserID) {
 		await fetch(`/hamsters/${winnerID}/win`, { method: 'PUT' })
 		await fetch(`/hamsters/${looserID}/lose`, { method: 'PUT' })
 		setNewMatchInitiator(!newMatchInitiator)
-	}	
+	}
 
 	async function getRandomHamster() {
+		console.log('GET RANDOM HAMSTER');
 		const response = await fetch('/hamsters/random', { method: 'GET' })
 		const hamster = await response.json()
 		return hamster
@@ -70,11 +78,24 @@ const Kamp = () => {
 
 	// ======= RETURN ETC ======= //
 	return (
-		<section>
-			<button onClick={()=> declareWinner(hamsterHero.id, hamsterVillain.id)}>{hamsterHero ? hamsterHero.name : defaultString}</button>
+		<section className='kamp-page'>
+			
+			{hamsterHero ? 
+			<div onClick={() => declareWinner(hamsterVillain.id, hamsterHero.id)}>
+				<HamsterCard hamster={hamsterHero} />
+			</div> 
+			: defaultString}
+
 			<br />VS<br />
-			<button onClick={()=> declareWinner(hamsterVillain.id, hamsterHero.id)}>{hamsterVillain ? hamsterVillain.name : defaultString}</button>
+
+			{hamsterVillain ? 
+			<div onClick={() => declareWinner(hamsterVillain.id, hamsterHero.id)}>
+				<HamsterCard hamster={hamsterVillain} />
+			</div> 
+			: defaultString}
+
 		</section>
+
 	)
 }
 export default Kamp

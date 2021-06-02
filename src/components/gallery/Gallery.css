@@ -1,0 +1,19 @@
+.gallery {
+	display: grid;
+	justify-items: stretch;
+	grid-template-columns: repeat(4, calc(25% - (1.25em / 4)));
+	column-gap: 0.5em;
+	grid-template-rows: auto; /* Den är lika hög som innehållet */
+	row-gap: 0.5em;
+	width:80%;
+	margin: 0.5em 0;
+}
+
+.gallery-item {
+	background-color: rgb(127, 180, 182);
+	border-radius: 5px;
+	grid-area: auto;
+	cursor: pointer;
+	padding: 0.5em 0;
+	padding-bottom: 0.5em;
+}

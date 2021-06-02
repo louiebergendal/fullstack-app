@@ -5,7 +5,7 @@ const HamsterForm = () => {
 	const [inputAge, setInputAge] = useState(0)
 	const [inputFavFood, setInputFavFood] = useState('default')
 	const [inputLoves, setInputLoves] = useState('default')
-	const [inputImgName, setInputImgName] = useState('default')
+	const [inputImgName] = useState('default')
 	const [wins] = useState(0)
 	const [defeats] = useState(0)
 	const [games, setGames] = useState(0)
@@ -28,6 +28,7 @@ const HamsterForm = () => {
 			return
 		}
 
+		// Räknar ut games
 		setGames(wins + defeats)
 
 		const formData = {
