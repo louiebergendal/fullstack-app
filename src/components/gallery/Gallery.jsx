@@ -18,19 +18,6 @@ import './Gallery.css'
 
 		Tänk på att inte visa för mycket information direkt. 
 		Låt användaren klicka/hovra över en bild för att visa mer information.
-
-
-
-	Route till hamster/id
-		Komponent som laddas vid den routen
-			logga hela hamster-objektet onMount
-
-
-			ELLER:
-				Gör som i galleri, men hämta bara en hamster
-				Vilken hamster? Kan jag skicka med id?
-
-
 */
 
 const Gallery = () => {
@@ -62,41 +49,52 @@ const Gallery = () => {
 		setHamsters(await getHamsters())
 	}
 
-	// Ska öppna popup? eller egen route?
-	function checkInfo(hamster) {
+	// Öppnar infolådan
+	function openInfoBox(hamster) {
 		setSelectedHamster(hamster)
 	}
 
-
+	// Stänger infolådan
+	function closeInfoBox() {
+		setSelectedHamster(null)
+	}
 
 	return (
 		<div>
+
+			{/* Om man har selectat en hamster så mörkläggs allt bakom InfoBox */}
 			{selectedHamster ? 
-				/* Om en hamster är klickad så visas info-rutan */
-				<InfoBox hamster={selectedHamster}/>
-				: 
-				/* Annars visas galleriet */
-				<section className='gallery'>
-					{hamsters /* Om hamsterarna finns så mapas de ut */
-					? hamsters.map(hamster => (
-						<div key={hamster.id} className='gallery-item' onClick={() => checkInfo(hamster)}>
-							
-							<HamsterCard hamster={hamster} />
+				<div>
 
-							<button onClick={() => removeHamster(hamster.id)}>Remove</button>
+					{/* Om man klickar på mörkret så slopas selectionen och mörkret stängs */}
+					<div className='darkness' onClick={() => closeInfoBox()}></div>
 
-							{/*  */}
-							{/* <Link to={`/gallery/${hamster.id}`}>gallery</Link> */}
+					{/* Själva infolådan */}
+					<InfoBox hamster={selectedHamster}/>
 
-						</div>
-					))
-					: 'Hämtar hamstrar från API...'
-					}
-				
-					<HamsterForm />
-
-				</section>	
+				</div>
+			: ''
 			}
+
+			<section className='gallery'>
+				{hamsters /* Om hamsterarna finns så mapas de ut */
+				? hamsters.map(hamster => (
+
+					<div key={hamster.id} className='gallery-item' onClick={() => openInfoBox(hamster)}>
+						
+						<HamsterCard hamster={hamster} />
+						
+						{/* "e.stopPropagation()" gör så att man kan klicka på knappen, fastän parent har onClick.*/}
+						<button onClick={(e) => {e.stopPropagation(); removeHamster(hamster.id)} }>Remove</button>
+
+					</div>
+				))
+				: 'Hämtar hamstrar från API...'
+				}
+			</section>
+
+			<HamsterForm />
+			
 		</div>
 	)
 }

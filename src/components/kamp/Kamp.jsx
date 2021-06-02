@@ -6,35 +6,26 @@ import './Kamp.css'
 
 /*
 TODO:
-	Visa alla hamstrar som finns i databasen. 
-	Från galleriet ska man även kunna lägga till nya hamstrar och ta bort gamla.
-		- Hämta all hamsterdata (som i start)
-		- Lista datan sorterat efter hamster (med tillhörande bild)
-		- Varje hamster ska ha en delete-knapp
-		- På sidan ska det finnas en knapp för att lägga till en hamster (formulär)
-	Forsla datan upp i global space. Använd Context. Se lektionsfilmen.
+	PÅ STARTSIDAN
+	Om det av någon anledning inte går att nå backend-servern så ska du visa ett användarvänligt felmeddelande här. 
+	Användaren ska också få möjligheten att försöka igen.
 
-ROUTE:		URL:		FÖRKLARING:
-Startsida	/			Förklarar hur man använder appen.
-Kamp		/battle		Visa två slumpade hamstrar. 
-						Låt användaren välja den sötaste. 
-						Visa resultatet och initiera nästa match.
-Galleri		/gallery	Visa alla hamstrar som finns i databasen. 
-						Från galleriet ska man även kunna lägga till nya hamstrar och ta bort gamla.
+	Nu ska du visa hur många vinster och förluster respektive hamster har. 
+	Användaren ska få möjligheten att starta en ny match, med två slumpade hamstrar.
 */
 
 const Kamp = () => {
 	const [hamsterHero, setHamsterHero] = useState(null)
 	const [hamsterVillain, setHamsterVillain] = useState(null)
-	const [newMatchInitiator, setNewMatchInitiator] = useState(false) // ser till att useEffect körs varje gång någon förlorar
+	const [showVictoryResult, setShowVictoryResult] = useState(false)
+	const [winner, setWinner] = useState(null)
+	const [loser, setLoser] = useState(null)
 
 	const isMounted = useMountedRef()
 	const defaultString = 'Awaiting champion...'
 
 	useEffect(() => {
 		async function get() {
-
-			console.log('useEffect');
 
 			// Hämtar kombatanter från backend
 			const heroHamster = await getRandomHamster()
@@ -47,20 +38,43 @@ const Kamp = () => {
 			}
 		}
 		get() // Funktionen kallar på sig själv
-	},	[isMounted, newMatchInitiator])
+	},	[isMounted])
 
-/* 	console.log('hamsterHero2: ', hamsterHero);
-	console.log('villainHamster2: ', villainHamster); */
 
 	// ======= FUNKTIONS-DEKLARATIONER ======= //
-	async function declareWinner(winnerID, looserID) {
-		await fetch(`/hamsters/${winnerID}/win`, { method: 'PUT' })
-		await fetch(`/hamsters/${looserID}/lose`, { method: 'PUT' })
-		setNewMatchInitiator(!newMatchInitiator)
+
+	async function declareWinner(winner, loser) {
+		console.log(showVictoryResult);
+
+		// Om matchresultaten inte visas så är matchen pågående.
+		// Sålänge matchen är pågående kan någon vinna.
+		if (!showVictoryResult) {
+
+			// Registrerar matchresultatet
+			setWinner(winner)
+			setLoser(loser)
+			await fetch(`/hamsters/${winner.id}/win`, { method: 'PUT' })
+			await fetch(`/hamsters/${loser.id}/lose`, { method: 'PUT' })
+
+			// Visar match-resultatet
+			setShowVictoryResult(true)
+		}
+	}
+
+	async function startNewMatch() {
+		// Stäng ned resultatet från den förra matchen och gör kombatanterna (när de kommit) klickbara
+		setShowVictoryResult(false)
+
+		// Hämtar kombatanter från backend
+		const heroHamster = await getRandomHamster()
+		const villainHamster = await recursivelyGetVillainousHamster(heroHamster)
+
+		setHamsterHero(heroHamster)
+		setHamsterVillain(villainHamster)
+
 	}
 
 	async function getRandomHamster() {
-		console.log('GET RANDOM HAMSTER');
 		const response = await fetch('/hamsters/random', { method: 'GET' })
 		const hamster = await response.json()
 		return hamster
@@ -70,30 +84,59 @@ const Kamp = () => {
 		let villainHamsterCandidate = await getRandomHamster()
 	
 		if (heroHamster.id === villainHamsterCandidate.id) {
-			await recursivelyGetVillainousHamster(heroHamster);
+			return await recursivelyGetVillainousHamster(heroHamster);
 		} else {
 			return villainHamsterCandidate;
 		}
 	}
 
-	// ======= RETURN ETC ======= //
+	// ======= RETURN, JSX ETC ======= //
+
 	return (
-		<section className='kamp-page'>
-			
-			{hamsterHero ? 
-			<div onClick={() => declareWinner(hamsterVillain.id, hamsterHero.id)}>
-				<HamsterCard hamster={hamsterHero} />
-			</div> 
-			: defaultString}
+		<section>
+			<div className='battle'>
+				{hamsterHero ? 
+					<div className='combatant' onClick={() => declareWinner(hamsterHero, hamsterVillain)}>
 
-			<br />VS<br />
+						<HamsterCard hamster={hamsterHero} />
 
-			{hamsterVillain ? 
-			<div onClick={() => declareWinner(hamsterVillain.id, hamsterHero.id)}>
-				<HamsterCard hamster={hamsterVillain} />
-			</div> 
-			: defaultString}
+					</div>
+				: defaultString
+				}
 
+				<div></div>
+
+				{hamsterVillain ? 
+					<div className='combatant' onClick={() => declareWinner(hamsterVillain, hamsterHero)}>
+						<HamsterCard hamster={hamsterVillain} />
+					</div>
+				: defaultString
+				}
+
+			</div>
+
+			{showVictoryResult ? 
+				<div className='victory-box'>
+					
+					<button onClick={startNewMatch}>next battle!</button>
+
+					<div>
+						<p>WINNER!</p>
+						<p>Name: {winner.name}</p>
+						<p>Wins: {winner.wins + 1}</p>
+						<p>Defeats: {winner.defeats}</p>
+					</div>
+
+					<div>
+						<p>LOOSER!</p>
+						<p>Name: {loser.name}</p>
+						<p>Wins: {loser.wins}</p>
+						<p>Defeats: {loser.defeats + 1}</p>
+					</div>
+
+				</div>
+			: ''}
+		
 		</section>
 
 	)

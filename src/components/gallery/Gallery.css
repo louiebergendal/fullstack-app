@@ -2,18 +2,35 @@
 	display: grid;
 	justify-items: stretch;
 	grid-template-columns: repeat(4, calc(25% - (1.25em / 4)));
-	column-gap: 0.5em;
 	grid-template-rows: auto; /* Den är lika hög som innehållet */
+
+	column-gap: 0.5em;
 	row-gap: 0.5em;
-	width:80%;
 	margin: 0.5em 0;
+
+	width:80%;
+	max-width: 50em;
 }
 
 .gallery-item {
 	background-color: rgb(127, 180, 182);
 	border-radius: 5px;
 	grid-area: auto;
-	cursor: pointer;
 	padding: 0.5em 0;
 	padding-bottom: 0.5em;
+
+	cursor: pointer;
+	transition: 0.3s;
+}
+.gallery-item:hover {
+	background-color: rgb(147, 194, 194);
+}
+
+.darkness {
+	background-color: rgba(0, 0, 0, 0.5);
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
 }

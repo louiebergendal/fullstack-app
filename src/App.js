@@ -8,14 +8,11 @@ import InfoBox from './components/info-box/InfoBox'
 
 /*
 	TODO:
-		- Lift state från Galleri till APP
-			- fixa state: selectedHamster (null/hamsterobjekt)
-			- fixa en setSelectedHamster-funktion
-				- setSelectedHamster(hamster)
-			
-
-
-
+		- Animera hamsterstrid
+		- README
+		- Namngivning
+		- Default-bild om hamsterImg inte matchar någon hamster
+		- Startsida med regelbeskrivning
 
 	SETUP:
 		- Stå i projektmappen	

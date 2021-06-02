@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import './HamsterForm.css'
 
 const HamsterForm = () => {
 	const [inputName, setInputName] = useState('default')
@@ -53,10 +54,9 @@ const HamsterForm = () => {
 	}
 
 	return (
-		<section>
-			<div>
+		<section className='hamster-form'>
 				<label> 
-					Name:
+					<p>Name:</p>	
 					<input onChange={event => {
 							setInputName(event.target.value)// <--- Här styr jag inputfältet
 							// EXEMPEL: setInputName(event.target.value.toUpperCase())
@@ -64,10 +64,8 @@ const HamsterForm = () => {
 						value={inputName}
 					/>
 				</label>
-			</div>
-			<div>
 				<label> 
-					Age:
+					<p>Age:</p>	
 					<input onChange={event => {
 							if (event.target.value >= 0) {
 								setInputAge(event.target.value)	
@@ -76,10 +74,8 @@ const HamsterForm = () => {
 						value={inputAge}
 					/>
 				</label>
-			</div>
-			<div>
 				<label> 
-					Favourite food:
+					<p>Favourite food:</p>
 					<input onChange={event => {
 							console.log('Controlled change', event.target.value)
 							setInputFavFood(event.target.value)
@@ -87,10 +83,8 @@ const HamsterForm = () => {
 						value={inputFavFood}
 					/>
 				</label>
-			</div>
-			<div>
 				<label> 
-					Loves:
+					<p>Loves:</p>
 					<input onChange={event => {
 							console.log('Controlled change', event.target.value)
 							setInputLoves(event.target.value)
@@ -98,7 +92,6 @@ const HamsterForm = () => {
 						value={inputLoves}
 					/>
 				</label>
-			</div>
 			
 			<button onClick={postHamster}> post hamster </button>
 

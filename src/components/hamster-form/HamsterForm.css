@@ -1,0 +1,28 @@
+.hamster-form {
+    background-color: rgb(127, 180, 182);
+    padding: 1rem;
+    padding-left: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-radius: 5px;
+}
+
+.hamster-form label {
+    display: flex;
+    margin-bottom: 0.25rem;
+}
+
+.hamster-form button {
+    margin: 1rem;
+}
+
+.hamster-form p {
+    width: 7rem;
+    text-align: end;
+    margin: 0 0.5rem;
+    margin-left: 0;
+}
+
+input {
+    height: 1rem;
+    color: rgb(189, 189, 189);
+}
