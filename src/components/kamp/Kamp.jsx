@@ -19,7 +19,7 @@ const Kamp = () => {
 	const [hamsterVillain, setHamsterVillain] = useState(null)
 	const [showVictoryResult, setShowVictoryResult] = useState(false)
 	const [winner, setWinner] = useState(null)
-	const [loser, setLoser] = useState(null)
+/* 	const [loser, setLoser] = useState(null) */
 
 	const isMounted = useMountedRef()
 	const defaultString = 'Awaiting champion...'
@@ -52,7 +52,41 @@ const Kamp = () => {
 
 			// Registrerar matchresultatet
 			setWinner(winner)
-			setLoser(loser)
+/* 			setLoser(loser) */
+
+			// Updaterar display-datan
+			if(winner === hamsterHero) {
+
+				// Hamster hero segrar
+				const hamsterHeroCopy = hamsterHero
+				hamsterHeroCopy.wins = (hamsterHeroCopy.wins + 1)
+				hamsterHeroCopy.games = (hamsterHeroCopy.games + 1)
+				
+				// Hamster villain besegras
+				const hamsterVillainCopy = hamsterVillain
+				hamsterVillainCopy.defeats = (hamsterVillainCopy.defeats + 1)
+				hamsterVillainCopy.games = (hamsterVillainCopy.games + 1)
+
+				setHamsterHero(hamsterHeroCopy)
+				setHamsterVillain(hamsterVillainCopy)
+
+			} else {
+
+				// Hamster villain segrar
+				const hamsterVillainCopy = hamsterVillain
+				hamsterVillainCopy.wins = (hamsterVillainCopy.wins + 1)
+				hamsterVillainCopy.games = (hamsterVillainCopy.games + 1)
+				
+				// Hamster hero besegras
+				const hamsterHeroCopy = hamsterHero
+				hamsterHeroCopy.defeats = (hamsterHeroCopy.defeats + 1)
+				hamsterHeroCopy.games = (hamsterHeroCopy.games + 1)
+
+				setHamsterHero(hamsterHeroCopy)
+				setHamsterVillain(hamsterVillainCopy)
+			}
+
+			// Registrerar resultatet i databasen
 			await fetch(`/hamsters/${winner.id}/win`, { method: 'PUT' })
 			await fetch(`/hamsters/${loser.id}/lose`, { method: 'PUT' })
 
@@ -71,7 +105,6 @@ const Kamp = () => {
 
 		setHamsterHero(heroHamster)
 		setHamsterVillain(villainHamster)
-
 	}
 
 	async function getRandomHamster() {
@@ -92,14 +125,19 @@ const Kamp = () => {
 
 	// ======= RETURN, JSX ETC ======= //
 
+/* 	let isWinner =  */
+
+
 	return (
-		<section>
+		<section className='battle-background'>
 			<div className='battle'>
 				{hamsterHero ? 
-					<div className='combatant' onClick={() => declareWinner(hamsterHero, hamsterVillain)}>
-
+					<div className={ hamsterHero === winner ? 'combatant winner' : 'combatant' } onClick={() => declareWinner(hamsterHero, hamsterVillain)}>
 						<HamsterCard hamster={hamsterHero} />
-
+						<div className='text-wrapper'>
+							<p>Hej! Jag heter {hamsterHero.name}!</p>
+							<p>När jag inte äter {hamsterHero.favFood} gillar jag att {hamsterHero.loves}.</p>
+						</div>
 					</div>
 				: defaultString
 				}
@@ -107,8 +145,12 @@ const Kamp = () => {
 				<div></div>
 
 				{hamsterVillain ? 
-					<div className='combatant' onClick={() => declareWinner(hamsterVillain, hamsterHero)}>
+					<div className={ hamsterVillain === winner ? 'combatant winner' : 'combatant' } onClick={() => declareWinner(hamsterVillain, hamsterHero)}>
 						<HamsterCard hamster={hamsterVillain} />
+						<div className='text-wrapper'>
+							<p>Hej! Mitt namn är {hamsterVillain.name}!</p>
+							<p>Jag gillar att {hamsterVillain.loves}, och annars käkar jag mest {hamsterVillain.favFood}.</p>	
+						</div>
 					</div>
 				: defaultString
 				}
@@ -116,23 +158,26 @@ const Kamp = () => {
 			</div>
 
 			{showVictoryResult ? 
+			
 				<div className='victory-box'>
+
+					<h2>{winner.name} står som segrare!</h2>
+
+					<div>
+						<div>
+							<h4>Namn: {hamsterHero.name}</h4>
+							<p>Segrar: {hamsterHero.wins}</p>
+							<p>Förluster: {hamsterHero.defeats}</p>
+						</div>
+
+						<div>
+							<h4>Namn: {hamsterVillain.name}</h4>
+							<p>Segrar: {hamsterVillain.wins}</p>
+							<p>Förluster: {hamsterVillain.defeats}</p>
+						</div>
+					</div>
 					
-					<button onClick={startNewMatch}>next battle!</button>
-
-					<div>
-						<p>WINNER!</p>
-						<p>Name: {winner.name}</p>
-						<p>Wins: {winner.wins + 1}</p>
-						<p>Defeats: {winner.defeats}</p>
-					</div>
-
-					<div>
-						<p>LOOSER!</p>
-						<p>Name: {loser.name}</p>
-						<p>Wins: {loser.wins}</p>
-						<p>Defeats: {loser.defeats + 1}</p>
-					</div>
+					<button onClick={startNewMatch}>En gång till!</button>
 
 				</div>
 			: ''}

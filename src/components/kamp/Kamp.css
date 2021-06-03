@@ -1,4 +1,7 @@
+.battle-background {
+	height: 90vh;
 
+}
 .battle {
 	display: grid;
 	justify-items: stretch;
@@ -10,16 +13,65 @@
 	width: 20em;
 	font-size: 2rem;
 }
-
-.battle p {
-	margin: 0rem, 0rem;
-}
-
 .battle .combatant {
 	border-radius: 5px;
 	background-color: rgb(127, 180, 182);
 	transition: 0.3s;
+	height: 16.5rem;
 }
 .battle .combatant:hover {
+	cursor: pointer;
 	background-color: rgb(147, 194, 194);
+	transform: translateY(-2px);
+	box-shadow: 0rem 0.3rem 0.3rem rgba(0, 0, 0, 0.5);
+}
+.battle .combatant.active {
+	background-color: rgb(127, 180, 182);
+}
+
+
+.battle .text-wrapper {
+	height: 10rem;
+}
+.battle .combatant p {
+	font-size: medium;
+	margin: 0 1rem;
+	margin-bottom: 1rem;
+}
+.battle .combatant.winner {
+	animation-name: victory;
+	transform: translateY();
+	animation-duration: 0.2s;
+}
+
+
+.victory-box button {
+	margin: 1rem;
+}
+.victory-box div {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	background-color: rgb(127, 180, 182);
+	border-radius: 5px;
+}
+.victory-box div div {
+	display: flex;
+	flex-direction: column;
+	max-width: 15rem;
+	margin: 1rem;
+}
+.victory-box div div p {
+	margin: 0.1rem;
+	text-align: left;
+}
+.victory-box div div h4 {
+	margin: 0.1rem;
+}
+
+
+@keyframes victory {
+0%   {transform: translateY(0);}
+50%  {transform: translateY(-20px);}
+100%  {transform: translateY(0);}
 }

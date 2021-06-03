@@ -386,12 +386,8 @@ nav a.active {
 
 main {
 	background-color: #B5E5D9;
-
-
   display: flex;
-
   justify-content: center;
-
   padding: 3rem 0rem;
 }
 main div {

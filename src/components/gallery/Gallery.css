@@ -25,6 +25,9 @@
 .gallery-item:hover {
 	background-color: rgb(147, 194, 194);
 }
+.gallery-item p {
+	margin: 0;
+}
 
 .darkness {
 	background-color: rgba(0, 0, 0, 0.5);

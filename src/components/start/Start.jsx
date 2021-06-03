@@ -1,4 +1,5 @@
-
+import './Start.css'
+import { BrowserRouter as Router, Link, Switch, Route } from 'react-router-dom';
 /* 
 TODO:
 	Nu når jag hamsterdatan på ett rimligt sätt.
@@ -13,13 +14,24 @@ Tävla		/battle		Visa två slumpade hamstrar. Låt användaren välja den sötas
 Galleri		/gallery	Visa alla hamstrar som finns i databasen. Från galleriet ska man även kunna lägga till nya hamstrar och ta bort gamla.
 
 */
-const Hamsters = () => {
+const Start = () => {
 
 	return (
-		<div>
-			I AM START
+		<div className='wrapper'>
+			<section className='start'>
+				<h2> </h2>
+				<h1>Hamsterduellen</h1>
+				<p>
+					Vissa hamstrar får mat och kärlek, andra inte.<br/><br/>
+					Klicka på den hamster som är sötast!<br/>
+				</p>
+
+				<Link to="/battle"> Nu kör vi! </Link>
+			</section>
+
+			<div className='filler'></div>
 		</div>
 	)
 }
 
-export default Hamsters
+export default Start

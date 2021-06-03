@@ -18,7 +18,6 @@ function InfoBox(props) {
 				<div className='info-box-img' style={{backgroundImage: `url(img/${props.hamster.imgName})`}}>
 				</div>
 
-			{/* <Link to="/galleri"> galleri page </Link> */}
 			</div>
 		</div>
 	);

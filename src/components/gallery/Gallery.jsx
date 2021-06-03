@@ -81,7 +81,7 @@ const Gallery = () => {
 				? hamsters.map(hamster => (
 
 					<div key={hamster.id} className='gallery-item' onClick={() => openInfoBox(hamster)}>
-						
+						<p>{hamster.name}</p>
 						<HamsterCard hamster={hamster} />
 						
 						{/* "e.stopPropagation()" gör så att man kan klicka på knappen, fastän parent har onClick.*/}

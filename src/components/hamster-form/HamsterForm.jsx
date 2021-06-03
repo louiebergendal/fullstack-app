@@ -77,7 +77,6 @@ const HamsterForm = () => {
 				<label> 
 					<p>Favourite food:</p>
 					<input onChange={event => {
-							console.log('Controlled change', event.target.value)
 							setInputFavFood(event.target.value)
 						}}
 						value={inputFavFood}
@@ -86,7 +85,6 @@ const HamsterForm = () => {
 				<label> 
 					<p>Loves:</p>
 					<input onChange={event => {
-							console.log('Controlled change', event.target.value)
 							setInputLoves(event.target.value)
 						}}
 						value={inputLoves}
