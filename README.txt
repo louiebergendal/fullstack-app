@@ -9,7 +9,10 @@ En användare röstar på den av två slumpade hamstar den tycker är sötast i 
 Efter att man röstat kan man se tidigare vinster och förluster. 
 Alla hamstarar visas upp i ett galleri där det finns möjlighet att få fullständig information om varje enskild hamster. 
 Från galleriet kan man posta en ny hamster men även radera befintliga hamstarar. 
- 
+
+## Problem
+useEffect i /battle visar en varning, men verkar inte stöta på några faktiska problem.
+
 ## För att starta backend:
 npm run start
  

@@ -1,5 +1,5 @@
 import './Start.css'
-import { BrowserRouter as Router, Link, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
 /* 
 TODO:
 	Nu når jag hamsterdatan på ett rimligt sätt.
@@ -8,10 +8,10 @@ TODO:
 	Forsla datan upp i global space. Använd Context. Se lektionsfilmen.
 
 
-ROUTE:		URL:		FÖRKLARING:
-Startsida	/			Förklarar hur man använder appen.
-Tävla		/battle		Visa två slumpade hamstrar. Låt användaren välja den sötaste. Visa resultatet och initiera nästa match.
-Galleri		/gallery	Visa alla hamstrar som finns i databasen. Från galleriet ska man även kunna lägga till nya hamstrar och ta bort gamla.
+	ROUTE:		URL:		FÖRKLARING:
+	Startsida	/			Förklarar hur man använder appen.
+	Tävla		/battle		Visa två slumpade hamstrar. Låt användaren välja den sötaste. Visa resultatet och initiera nästa match.
+	Galleri		/gallery	Visa alla hamstrar som finns i databasen. Från galleriet ska man även kunna lägga till nya hamstrar och ta bort gamla.
 
 */
 const Start = () => {

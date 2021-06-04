@@ -2,11 +2,11 @@ import { useState } from 'react'
 import './HamsterForm.css'
 
 const HamsterForm = () => {
-	const [inputName, setInputName] = useState('default')
-	const [inputAge, setInputAge] = useState(0)
-	const [inputFavFood, setInputFavFood] = useState('default')
-	const [inputLoves, setInputLoves] = useState('default')
-	const [inputImgName] = useState('default')
+	const [inputName, setInputName] = useState('')
+	const [inputAge, setInputAge] = useState('')
+	const [inputFavFood, setInputFavFood] = useState('')
+	const [inputLoves, setInputLoves] = useState('')
+	const [inputImgName, setInputImgName] = useState('')
 	const [wins] = useState(0)
 	const [defeats] = useState(0)
 	const [games, setGames] = useState(0)
@@ -68,7 +68,7 @@ const HamsterForm = () => {
 					<p>Age:</p>	
 					<input onChange={event => {
 							if (event.target.value >= 0) {
-								setInputAge(event.target.value)	
+								setInputAge(event.target.value)
 							}
 						}}
 						value={inputAge}
@@ -88,6 +88,14 @@ const HamsterForm = () => {
 							setInputLoves(event.target.value)
 						}}
 						value={inputLoves}
+					/>
+				</label>
+				<label> 
+					<p>Image:</p>
+					<input onChange={event => {
+							setInputImgName(event.target.value)
+						}}
+						value={inputImgName}
 					/>
 				</label>
 			

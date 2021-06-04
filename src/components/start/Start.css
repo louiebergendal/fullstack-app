@@ -4,6 +4,9 @@
     padding-top: 0.2rem;
     background-color: rgb(127, 180, 182);
 }
+.start p {
+    margin-bottom: 2rem;
+}
 
 .start a {
     text-decoration: none;

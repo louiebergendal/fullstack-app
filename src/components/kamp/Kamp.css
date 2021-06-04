@@ -14,19 +14,16 @@
 	font-size: 2rem;
 }
 .battle .combatant {
+	cursor: default;
 	border-radius: 5px;
 	background-color: rgb(127, 180, 182);
 	transition: 0.3s;
 	height: 16.5rem;
 }
-.battle .combatant:hover {
+.battle .combatant.active:hover {
 	cursor: pointer;
-	background-color: rgb(147, 194, 194);
 	transform: translateY(-2px);
 	box-shadow: 0rem 0.3rem 0.3rem rgba(0, 0, 0, 0.5);
-}
-.battle .combatant.active {
-	background-color: rgb(127, 180, 182);
 }
 
 

@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react'
+import { useEffect/*, useCallback */, useState } from 'react'
 import { useMountedRef } from '../../hooks/useMountedRef'
 import HamsterCard from '../hamster-card/HamsterCard'
 import './Kamp.css'
@@ -19,10 +19,11 @@ const Kamp = () => {
 	const [hamsterVillain, setHamsterVillain] = useState(null)
 	const [showVictoryResult, setShowVictoryResult] = useState(false)
 	const [winner, setWinner] = useState(null)
-/* 	const [loser, setLoser] = useState(null) */
 
 	const isMounted = useMountedRef()
 	const defaultString = 'Awaiting champion...'
+
+/*	memoizedCallback(); */
 
 	useEffect(() => {
 		async function get() {
@@ -40,6 +41,23 @@ const Kamp = () => {
 		get() // Funktionen kallar på sig själv
 	},	[isMounted])
 
+/* 	
+	const memoizedCallback = useCallback(
+		async () => {
+			// Hämtar kombatanter från backend
+			const heroHamster = await getRandomHamster()
+			const villainHamster = await recursivelyGetVillainousHamster(heroHamster)
+	
+			// Kollar så att komponenten är mountad
+			if (isMounted.current) {
+				setHamsterHero(heroHamster)
+				setHamsterVillain(villainHamster)
+			}
+		},
+		[heroHamster, villainHamster], // isMounted?
+	);
+*/
+
 
 	// ======= FUNKTIONS-DEKLARATIONER ======= //
 
@@ -52,17 +70,16 @@ const Kamp = () => {
 
 			// Registrerar matchresultatet
 			setWinner(winner)
-/* 			setLoser(loser) */
 
 			// Updaterar display-datan
 			if(winner === hamsterHero) {
 
-				// Hamster hero segrar
+				// Hamster hero seger skrivs in i display-datan
 				const hamsterHeroCopy = hamsterHero
 				hamsterHeroCopy.wins = (hamsterHeroCopy.wins + 1)
 				hamsterHeroCopy.games = (hamsterHeroCopy.games + 1)
 				
-				// Hamster villain besegras
+				// Hamster villain förlust skrivs in i display-datan
 				const hamsterVillainCopy = hamsterVillain
 				hamsterVillainCopy.defeats = (hamsterVillainCopy.defeats + 1)
 				hamsterVillainCopy.games = (hamsterVillainCopy.games + 1)
@@ -72,12 +89,12 @@ const Kamp = () => {
 
 			} else {
 
-				// Hamster villain segrar
+				// Hamster villain skrivs in i display-datan
 				const hamsterVillainCopy = hamsterVillain
 				hamsterVillainCopy.wins = (hamsterVillainCopy.wins + 1)
 				hamsterVillainCopy.games = (hamsterVillainCopy.games + 1)
 				
-				// Hamster hero besegras
+				// Hamster heros förlust skrivs in i display-datan
 				const hamsterHeroCopy = hamsterHero
 				hamsterHeroCopy.defeats = (hamsterHeroCopy.defeats + 1)
 				hamsterHeroCopy.games = (hamsterHeroCopy.games + 1)
@@ -114,25 +131,29 @@ const Kamp = () => {
 	}
 
 	async function recursivelyGetVillainousHamster(heroHamster) {
+		
+		// Hämtar en kandidat
 		let villainHamsterCandidate = await getRandomHamster()
 	
+		// Kollar så att onding-kandidaten inte är samma som hjälten
 		if (heroHamster.id === villainHamsterCandidate.id) {
+
+			// Om ondingkandidaten är samma som hjälten så börjar funktionen om
 			return await recursivelyGetVillainousHamster(heroHamster);
 		} else {
+
+			// Annars blir onding-kandidaten antagen som onding
 			return villainHamsterCandidate;
 		}
 	}
 
 	// ======= RETURN, JSX ETC ======= //
 
-/* 	let isWinner =  */
-
-
 	return (
 		<section className='battle-background'>
 			<div className='battle'>
 				{hamsterHero ? 
-					<div className={ hamsterHero === winner ? 'combatant winner' : 'combatant' } onClick={() => declareWinner(hamsterHero, hamsterVillain)}>
+					<div className={ 'combatant ' + (hamsterHero === winner ? 'winner ' : '') + (showVictoryResult ? '' : 'active ')} onClick={() => declareWinner(hamsterHero, hamsterVillain)}>
 						<HamsterCard hamster={hamsterHero} />
 						<div className='text-wrapper'>
 							<p>Hej! Jag heter {hamsterHero.name}!</p>
@@ -145,7 +166,7 @@ const Kamp = () => {
 				<div></div>
 
 				{hamsterVillain ? 
-					<div className={ hamsterVillain === winner ? 'combatant winner' : 'combatant' } onClick={() => declareWinner(hamsterVillain, hamsterHero)}>
+					<div className={ 'combatant ' + (hamsterVillain === winner ? 'winner' : '') + (showVictoryResult ? '' : 'active ')} onClick={() => declareWinner(hamsterVillain, hamsterHero)}>
 						<HamsterCard hamster={hamsterVillain} />
 						<div className='text-wrapper'>
 							<p>Hej! Mitt namn är {hamsterVillain.name}!</p>
